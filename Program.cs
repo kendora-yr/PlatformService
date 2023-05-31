@@ -6,19 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-if(builder.Environment.IsProduction()){
+if(builder.Environment.IsProduction())
+{
+    Console.WriteLine("--> Using SqlServer Db");
     builder.Services.AddDbContext<AppDbContext>(opt => 
     opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
 }
-else{
+else
+{
+    Console.WriteLine("--> Using InMem Db");
     builder.Services.AddDbContext<AppDbContext>(opt => 
     opt.UseInMemoryDatabase("InMem"));
 }
-
-
-
-// builder.Services.AddDbContext<AppDbContext>(opt => 
-// opt.UseInMemoryDatabase("InMem"));
 
 builder.Services.AddScoped<IPlatformRepo,PlatformRepo>();
 
@@ -33,9 +32,6 @@ builder.Services.AddSwaggerGen();
 // Console.WriteLine($"--> CommandService Endpoint {Configuration["CommandService"]}");
 
 var app = builder.Build();
-
-// builder.Services.AddDbContext<AppDbContext>(opt => 
-//     opt.UseSqlServer(app.Configuration.GetConnectionString("PlatformsConn")));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
